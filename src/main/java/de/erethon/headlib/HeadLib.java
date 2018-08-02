@@ -12,15 +12,12 @@
  */
 package de.erethon.headlib;
 
+import de.erethon.commons.item.ItemUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import net.minecraft.server.v1_13_R1.NBTTagCompound;
-import net.minecraft.server.v1_13_R1.NBTTagList;
-import net.minecraft.server.v1_13_R1.NBTTagString;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -334,18 +331,12 @@ public enum HeadLib {
     ANIMAL_SQUID("f95d9504-ea2b-4b89-b2d0-d400654a7010", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMDE0MzNiZTI0MjM2NmFmMTI2ZGE0MzRiODczNWRmMWViNWIzY2IyY2VkZTM5MTQ1OTc0ZTljNDgzNjA3YmFjIn19fQ=="),
     ANIMAL_MOOSHROOM("e206ac29-ae69-475b-909a-fb523d894336", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDBiYzYxYjk3NTdhN2I4M2UwM2NkMjUwN2EyMTU3OTEzYzJjZjAxNmU3YzA5NmE0ZDZjZjFmZTFiOGRiIn19fQ==");
 
-    private NBTTagCompound skullOwner;
+    private String uuid;
+    private String textureValue;
 
     HeadLib(String uuid, String textureValue) {
-        skullOwner = new NBTTagCompound();
-        skullOwner.set("Id", new NBTTagString(uuid));
-        NBTTagCompound properties = new NBTTagCompound();
-        NBTTagList textures = new NBTTagList();
-        NBTTagCompound value = new NBTTagCompound();
-        value.set("Value", new NBTTagString(textureValue));
-        textures.add(value);
-        properties.set("textures", textures);
-        skullOwner.set("Properties", properties);
+        this.uuid = uuid;
+        this.textureValue = textureValue;
     }
 
     /**
@@ -462,11 +453,7 @@ public enum HeadLib {
             item.setItemMeta(meta);
         }
 
-        net.minecraft.server.v1_13_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
-        NBTTagCompound compound = nmsStack.getTag() != null ? nmsStack.getTag() : new NBTTagCompound();
-        compound.set("SkullOwner", skullOwner);
-        nmsStack.setTag(compound);
-        return CraftItemStack.asBukkitCopy(nmsStack);
+        return ItemUtil.setSkullOwner(item, uuid, textureValue);
     }
 
 }
