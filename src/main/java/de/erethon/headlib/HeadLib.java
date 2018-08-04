@@ -455,9 +455,7 @@ public enum HeadLib {
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName));
             if (loreLines.length != 0) {
-                List<String> loreCC = new ArrayList<>();
-                Arrays.stream(loreLines).forEach(l -> loreCC.add(ChatColor.translateAlternateColorCodes('&', l)));
-                meta.setLore(loreCC);
+                meta.setLore(Arrays.stream(loreLines).map(line -> ChatColor.translateAlternateColorCodes('&', line)).collect(Collectors.toList()));
             }
             item.setItemMeta(meta);
         }
