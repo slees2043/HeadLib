@@ -15,6 +15,7 @@ package de.erethon.headlib;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import net.minecraft.server.v1_13_R1.NBTTagCompound;
 import net.minecraft.server.v1_13_R1.NBTTagList;
 import net.minecraft.server.v1_13_R1.NBTTagString;
@@ -455,9 +456,7 @@ public enum HeadLib {
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName));
             if (loreLines.length != 0) {
-                List<String> loreCC = new ArrayList<>();
-                Arrays.stream(loreLines).forEach(l -> loreCC.add(ChatColor.translateAlternateColorCodes('&', l)));
-                meta.setLore(loreCC);
+                meta.setLore(Arrays.stream(loreLines).map(line -> ChatColor.translateAlternateColorCodes('&' line)).collect(Collectors.toList());
             }
             item.setItemMeta(meta);
         }
